@@ -3,67 +3,57 @@ package com.example;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import org.junit.Assert;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.*;
+
 
 @RunWith(MockitoJUnitRunner.class)
 public class lionTest {
 
     @Mock
-    private Feline mockFeline;
-
-    @Test
-    public void getKittens() throws Exception {
-
-        Lion lion = new Lion("Самец", mockFeline);
-
-        when(mockFeline.getKittens()).thenReturn(3);
-
-        int result = lion.getKittens();
-        assertEquals(3, result);
-    }
-
-    @Test
-    public void doesHaveManeMale() throws Exception {
-
-        Lion lion = new Lion("Самец", mockFeline);
-
-        boolean result = lion.doesHaveMane();
-        assertEquals(true, result);
-    }
-
-    @Test
-    public void doesHaveManeFemale() throws Exception {
-
-        Lion lion = new Lion("Самка", mockFeline);
-
-        boolean result = lion.doesHaveMane();
-        assertEquals(false, result);
-    }
+    Feline feline;
 
     @Test
     public void getFood() throws Exception {
-
-        Lion lion = new Lion("Самец", mockFeline);
-
-        when(mockFeline.getFood("Хищник")).thenReturn(List.of("Мясо"));
-
-        List<String> result = lion.getFood();
-        assertEquals(List.of("Мясо"), result);
+        Lion lion = new Lion("Самец", feline);
+        Mockito.when(feline.getFood("Хищник")).thenReturn(List.of("Животные", "Птицы", "Рыба"));
+        List<String> expectedResult = List.of("Животные", "Птицы", "Рыба");
+        List<String> actualResult = lion.getFood();
+        assertEquals("Некорректный результат вызова метода", expectedResult, actualResult);
     }
 
     @Test
-    public void incorrectGenderException() throws Exception {
+    public void getKittens() throws Exception {
+        Lion lion = new Lion("Самец", feline);
+        Mockito.when(feline.getKittens()).thenReturn(1);
+        int expectedResult = 1;
+        int actualResult = lion.getKittens();
+        assertEquals("Некорректный результат вызова метода", expectedResult, actualResult);
+    }
 
-        String expected = "Используйте допустимые значения пола животного - самец или самка";
-        Exception exception = Assert.assertThrows(Exception.class, () -> {
-            Lion lion = new Lion("Лев", mockFeline);
-        });
-        assertEquals(expected, exception.getMessage());
+    @Test
+    public void doesHaveMane() throws Exception {
+        Lion lion = new Lion("Самец", feline);
+        boolean expectedResult = true;
+        boolean actualResult = lion.doesHaveMane();
+        assertEquals("Некорректный результат вызова метода", expectedResult, actualResult);
+    }
+
+    @Test
+    public void constructorLionWhenSexIsMaleHasManeIsTrue() throws Exception {
+        Lion lion = new Lion("Самец", feline);
+        boolean actualResult = lion.doesHaveMane();
+        assertTrue("Некорректое значение свойства", actualResult);
+    }
+
+    @Test
+    public void constructorLionWhenSexIsFemaleHasManeIsFalse() throws Exception {
+        Lion lion = new Lion("Самка", feline);
+        boolean actualResult = lion.doesHaveMane();
+        assertFalse("Некорректое значение свойства", actualResult);
     }
 }

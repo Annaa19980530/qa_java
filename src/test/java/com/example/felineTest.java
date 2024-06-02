@@ -1,64 +1,57 @@
 package com.example;
 
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.junit.runner.RunWith;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
 public class felineTest {
 
-    @Mock
-    private Animal animalMock;
-
-    @Before
-    public void setUp() {
-        MockitoAnnotations.initMocks(this);
-    }
-
-    @Test
-    public void testEatMeat() throws Exception {
-        Feline feline = new Feline();
-        List<String> expectedFood = List.of("Животные", "Птицы", "Рыба");
-        when(animalMock.getFood("Хищник")).thenReturn(expectedFood);
-
-        List<String> actualFood = feline.eatMeat();
-
-        assertEquals(expectedFood, actualFood);
-    }
+    Feline feline = new Feline();
 
     @Test
     public void getFamily() {
-        Feline feline = new Feline();
-        String expectedFamily = "Кошачьи";
-
-        String actualFamily = feline.getFamily();
-
-        assertEquals(expectedFamily, actualFamily);
+        String expectedResult = "Кошачьи";
+        String actualResult = feline.getFamily();
+        assertEquals("Некорректный результат вызова метода", expectedResult, actualResult);
     }
 
     @Test
     public void getKittens() {
-        Feline feline = new Feline();
-        int expectedKittens = 1;
-
-        int actualKittens = feline.getKittens();
-
-        assertEquals(expectedKittens, actualKittens);
+        int expectedResult = 1;
+        int actualResult = feline.getKittens();
+        assertEquals("Получено некорректное значение", expectedResult, actualResult);
     }
 
     @Test
-    public void getKittensWithCount() {
-        Feline feline = new Feline();
-        int expectedKittens = 3;
-        int kittensCount = 3;
+    public void getKittensWithParameter() {
+        int expectedResult = 5;
+        int actualResult = feline.getKittens(5);
+        assertEquals("Получено некорректное значение", expectedResult, actualResult);
+    }
 
-        int actualKittens = feline.getKittens(kittensCount);
+    @Test
+    public void eatMeat() throws Exception {
+        List<String> expectedResult = List.of("Животные", "Птицы", "Рыба");
+        List<String> actualResult = feline.eatMeat();
+        assertEquals("Некорректный результат вызова метода", expectedResult, actualResult);
+    }
 
-        assertEquals(expectedKittens, actualKittens);
+    @Test
+    public void getFood() throws Exception {
+        List<String> expectedResult = List.of("Животные", "Птицы", "Рыба");
+        List<String> actualResult = feline.getFood("Хищник");
+        assertEquals("Получен некорректный список", expectedResult, actualResult);
+    }
+
+    @Test
+    public void getFoodWhenAnimal() throws Exception {
+        List<String> expectedResult = List.of("Трава", "Различные растения");
+        List<String> actualResult = feline.getFood("Травоядное");
+        assertEquals("Получен некорректный список", expectedResult, actualResult);
     }
 }
